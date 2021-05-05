@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Data;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace ImportExportFiles.Controllers
@@ -21,10 +22,13 @@ namespace ImportExportFiles.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var fileStream = TemplateExcel.FillReport("invoice.xlsx", "template.xlsx", GetDataSet(), new string[] { "{", "}" });
+            TemplateExcel.FillReport("invoice.xlsx", "template.xlsx", GetDataSet(), new string[] { "{", "}" });
             //Process.Start("invoice.xlsx");
             var excelName = $"UserList-{DateTime.Now:yyyyMMddHHmmssfff}.xlsx";
-            return File(fileStream, "application/octet-stream", excelName);
+
+            //reopen file for fix bug 
+            var fs = new FileStream("invoice.xlsx", FileMode.Open, FileAccess.Read);
+            return File(fs, "application/octet-stream", excelName);
         }
 
         public DataSet GetDataSet()

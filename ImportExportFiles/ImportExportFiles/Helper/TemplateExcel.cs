@@ -12,7 +12,7 @@ namespace ImportExportFiles.Helper
             FillReport(filename, templateFilename, data, new string[] { "%", "%" });
         }
 
-        public static FileStream FillReport(string filename, string templateFilename, DataSet data, string[] deliminator)
+        public static void FillReport(string filename, string templateFilename, DataSet data, string[] deliminator)
         {
             var templatePath =
                 @"D:\1.Window\7.Company\4. MyGitHub\ImportExportFiles\ImportExportFiles\ImportExportFiles\Files\" +
@@ -22,7 +22,7 @@ namespace ImportExportFiles.Helper
 
             using (var file = new FileStream(filename, FileMode.CreateNew))
             {
-                using (var temp = new FileStream(templatePath, FileMode.Open))
+                using (var temp = new FileStream(templatePath, FileMode.Open, FileAccess.Read))
                 {
                     ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
                     using (var xls = new ExcelPackage(file, temp))
@@ -63,7 +63,6 @@ namespace ImportExportFiles.Helper
                         xls.Save();
                     }
                 }
-                return file;
             }
         }
 
