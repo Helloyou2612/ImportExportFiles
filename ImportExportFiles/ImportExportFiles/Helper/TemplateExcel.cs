@@ -80,11 +80,14 @@ namespace ImportExportFiles.Helper
             for (var i = 0; i < n.Columns;
                 i++)
             {
-                cn[i] = (n.Value as object[,])[0, i].ToString().Replace(deliminator[0], "").Replace(deliminator[1], "");
+                var value = (n.Value as object[,])?[0, i] ?? string.Empty;
+                cn[i] = value.ToString()?.Replace(deliminator[0], "").Replace(deliminator[1], "");
                 if (cn[i].Contains("."))
                     cn[i] = cn[i].Split('.')[1];
                 st[i] = ws.Cells[row, n.Start.Column + i].StyleID;
             }
+
+            ws.InsertRow(row + 1, dt.Rows.Count - 1, row);
 
             foreach (DataRow r in dt.Rows)
             {
