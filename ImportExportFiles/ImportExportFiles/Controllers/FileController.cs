@@ -135,7 +135,7 @@ namespace ImportExportFiles.Controllers
                 excelPackage.SaveAs(fi);
             }
 
-            //reopen file for fix bug
+            //reopen file for fix bug file is openning
             var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read);
             return File(fs, "application/octet-stream", fileName);
         }
